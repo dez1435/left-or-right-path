@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Left or Right Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .game {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h1>Left or Right?</h1>
+    <p>Guess which side is correct!</p>
+    <button onclick="guess('left')">⬅ Left</button>
+    <button onclick="guess('right')">Right ➡</button>
+    <p id="message"></p>
+    <p>Score: <span id="score">0</span></p>
+  </div>
+
+  <script>
+    let score = 0;
+
+    function guess(choice) {
+      const correct = Math.random() < 0.5 ? 'left' : 'right';
+      const message = document.getElementById('message');
+
+      if (choice === correct) {
+        score++;
+        message.textContent = 'Correct! 🎉 It was ' + correct + '!';
+      } else {
+        message.textContent = 'Wrong 😅 It was ' + correct + '!';
+      }
+
+      document.getElementById('score').textContent = score;
+    }
+  </script>
+</body>
+</html>
