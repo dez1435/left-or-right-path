@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Left or Right Game</title>
+  <title>Choice Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,38 +16,82 @@
     .game {
       background: white;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       text-align: center;
-      width: 300px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     button {
-      font-size: 18px;
-      padding: 10px 20px;
-      margin: 10px;
+      font-size: 16px;
+      padding: 10px 16px;
+      margin: 6px;
       cursor: pointer;
     }
     #message {
-      margin-top: 15px;
+      margin-top: 12px;
       font-weight: bold;
+    }
+    #mode {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="game">
-    <h1>Left or Right?</h1>
-    <p>Guess which side is correct!</p>
-    <button onclick="guess('left')">⬅ Left</button>
-    <button onclick="guess('right')">Right ➡</button>
+    <h1>Choice Game</h1>
+
+    <div id="mode">
+      <button onclick="setMode('leftRight')">Left / Right</button>
+      <button onclick="setMode('yesNo')">Yes / No</button>
+      <button onclick="setMode('upDown')">Up / Down</button>
+    </div>
+
+    <p id="question">Choose a mode to start!</p>
+
+    <div id="choices"></div>
+
     <p id="message"></p>
     <p>Score: <span id="score">0</span></p>
   </div>
 
   <script>
     let score = 0;
+    let currentMode = null;
 
-    function guess(choice) {
-      const correct = Math.random() < 0.5 ? 'left' : 'right';
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('message').textContent = '';
+
+      if (mode === 'leftRight') {
+        showChoices(['left', 'right'], ['⬅ Left', 'Right ➡']);
+        document.getElementById('question').textContent = 'Left or Right?';
+      }
+
+      if (mode === 'yesNo') {
+        showChoices(['yes', 'no'], ['✅ Yes', '❌ No']);
+        document.getElementById('question').textContent = 'Yes or No?';
+      }
+
+      if (mode === 'upDown') {
+        showChoices(['up', 'down'], ['⬆ Up', '⬇ Down']);
+        document.getElementById('question').textContent = 'Up or Down?';
+      }
+    }
+
+    function showChoices(values, labels) {
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+
+      values.forEach((value, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = labels[index];
+        btn.onclick = () => guess(value, values);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function guess(choice, options) {
+      const correct = options[Math.floor(Math.random() * options.length)];
       const message = document.getElementById('message');
 
       if (choice === correct) {
